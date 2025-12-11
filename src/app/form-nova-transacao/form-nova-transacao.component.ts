@@ -14,6 +14,29 @@ export class FormNovaTransacaoComponent {
   extrato: number[] = [];
 
   aoSubmeter() {
-    console.log(this.valorTransacao);
+    switch (this.tipoTransacao) {
+      case 'saque':
+        this.realizarSaque();
+        break;
+      case 'deposito':
+        this.realizarDeposito();
+    }
+
+    this.resetarForm();
+  }
+
+  realizarDeposito() {
+    this.saldo += this.valorTransacao;
+    this.extrato.push(this.valorTransacao);
+  }
+
+  realizarSaque () {
+    this.saldo -= this.valorTransacao;
+    this.extrato.push(this.valorTransacao * -1);
+  }
+
+  resetarForm() {
+    this.valorTransacao = 0;
+    this.tipoTransacao = "";
   }
 }
