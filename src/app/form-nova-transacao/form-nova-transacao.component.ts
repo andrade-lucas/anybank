@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TipoTransacao, Transacao } from '../modelos/transacao';
 
 @Component({
   selector: 'app-form-nova-transacao',
@@ -8,35 +9,24 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './form-nova-transacao.component.css'
 })
 export class FormNovaTransacaoComponent {
-  valorTransacao: number = 0.0;
-  tipoTransacao: string = "";
-  saldo: number = 0;
-  extrato: number[] = [];
+  valorTransacao = "";
+  tipoTransacao = "";
+
+  transacaoCriada = output<Transacao>();
 
   aoSubmeter() {
-    switch (this.tipoTransacao) {
-      case 'saque':
-        this.realizarSaque();
-        break;
-      case 'deposito':
-        this.realizarDeposito();
-    }
+    const transacao = new Transacao(
+      this.tipoTransacao as TipoTransacao,
+      Number(this.valorTransacao)
+    )
+    
+    this.transacaoCriada.emit(transacao);
 
     this.resetarForm();
   }
 
-  realizarDeposito() {
-    this.saldo += this.valorTransacao;
-    this.extrato.push(this.valorTransacao);
-  }
-
-  realizarSaque () {
-    this.saldo -= this.valorTransacao;
-    this.extrato.push(this.valorTransacao * -1);
-  }
-
   resetarForm() {
-    this.valorTransacao = 0;
+    this.valorTransacao = "";
     this.tipoTransacao = "";
   }
 }
