@@ -18,10 +18,6 @@ export class AppComponent {
         case TipoTransacao.DEPOSITO:
           return acc + transacao.valor;
         case TipoTransacao.SAQUE:
-          // if (acc < transacao.valor) {
-          //   alert('Saldo insuficiente. Saldo atual: R$ ' + acc);
-          //   return 0;
-          // }
           return acc - transacao.valor;
         default:
           throw new Error('Tipo de transação não identificado.');
@@ -30,6 +26,8 @@ export class AppComponent {
   });
 
   processarTransacao(transacao: Transacao) {
+    if (transacao.tipo == TipoTransacao.SAQUE && this.saldo() < transacao.valor) 
+      return alert('Saldo insuficiente. Saldo atual: R$ ' + this.saldo());
     this.transacoes.update((listaAtual) => [transacao, ...listaAtual]);
   }
 }
