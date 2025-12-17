@@ -120,5 +120,8 @@
         "sourceLocale": "pt-BR"
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
